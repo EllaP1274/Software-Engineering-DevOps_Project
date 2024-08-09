@@ -104,4 +104,3 @@ def delete_ticket(ticket_id):
     return redirect(url_for('main.dashboard'))
 
 
-
