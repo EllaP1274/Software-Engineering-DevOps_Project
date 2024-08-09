@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mt-5">Welcome, {{ current_user.username }}!</h1>
+            <p>This is your dashboard. From here, you can manage IT assets, submit help desk tickets, and more.</p>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h4 class="card-title">Your Actions</h4>
+                    <ul>
+                        <li><a href="{{ url_for('new_asset') }}">Add a New Asset</a></li>
+                        <li><a href="{{ url_for('view_tickets') }}">View Your Tickets</a></li>
+                        {% if current_user.role == 'admin' %}
+                            <li><a href="{{ url_for('manage_assets') }}">Manage All Assets</a></li>
+                            <li><a href="{{ url_for('manage_tickets') }}">Manage All Tickets</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
