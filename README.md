@@ -20,6 +20,8 @@ set FLASK_APP=main.py
 set FLASK_ENV=development
 
 The command to create the database is python create_db.py
+The database is in the instance folder and is called site.db
+To view the database you will need to install the SQLite extension by alexcvzz in Visual Studio Code.
 
 The command to run the web app is 
 python main.py
