@@ -1,1 +1,1 @@
-web: gunicorn app:asset-management-app
+web: gunicorn app:app
