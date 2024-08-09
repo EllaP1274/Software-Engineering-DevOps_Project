@@ -77,6 +77,33 @@ def dashboard():
 if __name__ == '__main__':
     app.run(debug=True)
 
+# Defines routes
+from flask import Flask, render_template, request, redirect, url_for
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('dashboard.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        # Handle registration form submission
+        pass
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Handle login form submission
+        pass
+    return render_template('login.html')
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
 # Create routes for CRUD operations
 @app.route('/asset/new', methods=['GET', 'POST'])
 @login_required
