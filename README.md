@@ -15,15 +15,35 @@ I have used Render a hosting platform - Render does take a while to spin up and 
 You may need to run
 pip install flask-admin - that creates an admin panel where you can manage users, tickets and other models directly from the web interface.
 
+You will need to register an account first for a regular user and then the login page will pop up, you will then need to login using the same username and password you registered with. Or you can login with the admin username and password: username - admin and password - password.
+
 The commands to set environmental variables are 
 set FLASK_APP=main.py
 set FLASK_ENV=development
 
-The command to create the database is python create_db.py
-The database is in the instance folder and is called site.db
-To view the database you will need to install the SQLite extension by alexcvzz in Visual Studio Code.
+To view the database you will need to install the SQLite viewer extension by Florian Klampfer in Visual Studio Code. Click on the site.db file and click open, then at the top an option should appear for SQLite Viewer, click that and you can view the database.
+
+To create an admin user run
+flask shell
+Then run these commands in the flask shell terminal to add an admin or regular user, just change the role to regular for a regular user. Refresh the database using the refresh icon, above the tables, to view the new user in the database.
+admin_user = User(username='admin', password='password', role
+='admin')
+db.session.add(admin_user)
+db.session.commit() 
+
+You can change a users role in the flask shell terminal using
+user = User.query.filter_by(username='username_to_change').first()
+user.role = 'admin'
+db.session.commit()
+
+If you delete a record just refresh the database and you will see the record is gone.
 
 The command to run the web app is 
 python main.py
 
-You will need to register an account first and then the login page will pop up you will then need to login using the same username and password you registered with.
+This app is an IT Helpdesk System
+Students: Report technical issues with school-provided devices, such as laptops, tablets, or access to online resources.
+Teachers: Submit requests for technical support in their classrooms, such as fixing projectors, or internet issues, or setting up software.
+IT Staff: Use the system to track, manage, and resolve reported issues. They can prioritize, update, and mark tickets as resolved.
+The command to run the web app is 
+python main.py

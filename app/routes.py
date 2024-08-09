@@ -57,6 +57,20 @@ def logout():
     logout_user()
     return redirect(url_for('main.login'))
 
+@main.route('/promote/<int:user_id>')
+@login_required
+def promote_user(user_id):
+    if current_user.role != 'admin':
+        flash('Access denied.', 'danger')
+        return redirect(url_for('main.dashboard'))
+    
+    user = User.query.get(user_id)
+    if user:
+        user.role = 'admin'
+        db.session.commit()
+        flash(f'{user.username} has been promoted to admin.', 'success')
+    return redirect(url_for('main.dashboard'))
+
 @main.route('/create_ticket', methods=['POST'])
 @login_required
 def create_ticket():
@@ -78,3 +92,16 @@ def update_ticket(ticket_id):
         db.session.commit()
         flash('Ticket updated!', 'success')
     return redirect(url_for('main.dashboard'))
+
+@main.route('/delete_ticket/<int:ticket_id>', methods=['POST'])
+@login_required
+def delete_ticket(ticket_id):
+    ticket = Ticket.query.get(ticket_id)
+    if ticket and ticket.user_id == current_user.id:
+        db.session.delete(ticket)
+        db.session.commit()
+        flash('Ticket deleted!', 'success')
+    return redirect(url_for('main.dashboard'))
+
+
+
