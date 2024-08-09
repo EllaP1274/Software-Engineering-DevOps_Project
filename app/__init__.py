@@ -3,9 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_migrate import Migrate
 
 # Initialize Flask extensions
 db = SQLAlchemy()
+migrate = Migrate()
 login_manager = LoginManager()
 
 def create_app(config_class='config.Config'):
@@ -14,6 +16,7 @@ def create_app(config_class='config.Config'):
 
     # Initialize extensions with the app context
     db.init_app(app)
+    migrate.init_app(app, db)  # Initialize Flask-Migrate with the app and db
     login_manager.init_app(app)
     login_manager.login_view = 'main.login'
 

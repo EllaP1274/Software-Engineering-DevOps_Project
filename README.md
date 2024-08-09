@@ -21,9 +21,24 @@ set FLASK_ENV=development
 
 The command to create the database is python create_db.py
 The database is in the instance folder and is called site.db
-To view the database you will need to install the SQLite extension by alexcvzz in Visual Studio Code.
+To view the database you will need to install the SQLite viewer extension by Florian Klampfer in Visual Studio Code. Click on the site.db file and click open anyway then at the top an option should appear for SQLite Viewer, click that and you can view the database.
+
+To create an admin user run
+flask shell
+Then run these commands in the flask shell terminal to add an admin or regular user, just change the role to regular for a regular user. Refresh the database using the refresh icon, above the tables, to view the new user in the database.
+admin_user = User(username='admin', password='password', role
+='admin')
+db.session.add(admin_user)
+db.session.commit() 
+
+If you delete a record 
 
 The command to run the web app is 
 python main.py
 
 You will need to register an account first and then the login page will pop up you will then need to login using the same username and password you registered with.
+
+This app is an IT Helpdesk System
+Students: Report technical issues with school-provided devices, such as laptops, tablets, or access to online resources.
+Teachers: Submit requests for technical support in their classrooms, such as fixing projectors, or internet issues, or setting up software.
+IT Staff: Use the system to track, manage, and resolve reported issues. They can prioritize, update, and mark tickets as resolved.
