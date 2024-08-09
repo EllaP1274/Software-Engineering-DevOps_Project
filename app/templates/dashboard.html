@@ -1,11 +1,39 @@
-<form method="post" action="{{ url_for('main.create_ticket') }}">
-    <div class="form-group">
-        <label for="subject">Subject</label>
-        <input type="text" class="form-control" id="subject" name="subject" required>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mt-5">
+    <h2>Dashboard</h2>
+    <div class="card mt-3">
+        <div class="card-header">
+            Create New Ticket
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ url_for('main.create_ticket') }}">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" class="form-control" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Ticket</button>
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <textarea class="form-control" id="description" name="description" required></textarea>
+
+    <div class="mt-5">
+        <h3>Existing Tickets</h3>
+        <ul class="list-group">
+            {% for ticket in tickets %}
+            <li class="list-group-item">
+                <h5>{{ ticket.subject }}</h5>
+                <p>{{ ticket.description }}</p>
+            </li>
+            {% else %}
+            <li class="list-group-item">No tickets available.</li>
+            {% endfor %}
+        </ul>
     </div>
-    <button type="submit" class="btn btn-primary">Create Ticket</button>
-</form>
+</div>
+{% endblock %}
