@@ -46,5 +46,11 @@ Students: Report technical issues with school-provided devices, such as laptops,
 Teachers: Submit requests for technical support in their classrooms, such as fixing projectors, or internet issues, or setting up software.
 IT Staff: Use the system to track, manage, and resolve reported issues. They can update, and mark tickets as resolved.
 
+The command to build the app is
+pip install -r requirements.txt
+
+To start the render deployment run 
+gunicorn main:app
+
 The command to run the web app is 
 python main.py
