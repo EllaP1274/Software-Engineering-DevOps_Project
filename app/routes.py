@@ -86,21 +86,32 @@ def create_ticket():
 @login_required
 def update_ticket(ticket_id):
     ticket = Ticket.query.get(ticket_id)
-    if ticket and ticket.user_id == current_user.id:
-        ticket.subject = request.form['subject']
-        ticket.description = request.form['description']
-        db.session.commit()
-        flash('Ticket updated!', 'success')
+    if ticket:
+        if current_user.role == 'admin' or ticket.user_id == current_user.id:
+            ticket.subject = request.form['subject']
+            ticket.description = request.form['description']
+            db.session.commit()
+            flash('Ticket updated!', 'success')
+        else:
+            flash('Access denied. You can only edit your own tickets.', 'danger')
+    else:
+        flash('Ticket not found.', 'danger')
     return redirect(url_for('main.dashboard'))
+
 
 @main.route('/delete_ticket/<int:ticket_id>', methods=['POST'])
 @login_required
 def delete_ticket(ticket_id):
     ticket = Ticket.query.get(ticket_id)
-    if ticket and ticket.user_id == current_user.id:
-        db.session.delete(ticket)
-        db.session.commit()
-        flash('Ticket deleted!', 'success')
+    if ticket:
+        if current_user.role == 'admin':
+            db.session.delete(ticket)
+            db.session.commit()
+            flash('Ticket deleted!', 'success')
+        else:
+            flash('Access denied. Only admins can delete tickets.', 'danger')
+    else:
+        flash('Ticket not found.', 'danger')
     return redirect(url_for('main.dashboard'))
 
 
