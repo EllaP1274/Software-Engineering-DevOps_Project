@@ -21,12 +21,10 @@ The commands to set environmental variables are
 set FLASK_APP=main.py
 set FLASK_ENV=development
 
-To view the database you will need to install the SQLite viewer extension by Florian Klampfer in Visual Studio Code. Click on the site.db file and click open, then at the top an option should appear for SQLite Viewer, click that and you can view the database.
-
-The command to create the database is python create_db.py
-
 The database is in the instance folder and is called site.db
 To view the database you will need to install the SQLite viewer extension by Florian Klampfer in Visual Studio Code. Click on the site.db file and click open anyway then at the top an option should appear for SQLite Viewer, click that and you can view the database.
+
+The command to create the database is python create_db.py
 
 To create an admin user run
 flask shell
@@ -43,12 +41,10 @@ db.session.commit()
 
 If you delete a record just refresh the database and you will see the record is gone.
 
-The command to run the web app is 
-python main.py
-
 This app is an IT Helpdesk System
 Students: Report technical issues with school-provided devices, such as laptops, tablets, or access to online resources.
 Teachers: Submit requests for technical support in their classrooms, such as fixing projectors, or internet issues, or setting up software.
-IT Staff: Use the system to track, manage, and resolve reported issues. They can prioritize, update, and mark tickets as resolved.
+IT Staff: Use the system to track, manage, and resolve reported issues. They can update, and mark tickets as resolved.
+
 The command to run the web app is 
 python main.py
