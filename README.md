@@ -54,3 +54,5 @@ waitress-serve --host=127.0.0.1 --port=5000 main:app
 
 The command to run the web app is 
 python main.py
+
+You can run python delete_user.py to delete any unwanted users.
