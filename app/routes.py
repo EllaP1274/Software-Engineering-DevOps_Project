@@ -23,7 +23,7 @@ def dashboard():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
-    
+
     form = RegistrationForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -34,24 +34,24 @@ def register():
         db.session.commit()
         flash('Registration successful! Please login.', 'success')
         return redirect(url_for('main.login'))
-    
+
     return render_template('register.html', form=form)
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
-    
+
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        user = User.query.filter_by(username=username, password=password).first()
+        if user:
             login_user(user)
             return redirect(url_for('main.dashboard'))
-        flash('Login failed. Please check your username and/or password or register for an account.', 'danger')
-    
+        flash('Login failed. Check your username and/or password.', 'danger')
+
     return render_template('login.html', form=form)
 
 @main.route('/logout')
