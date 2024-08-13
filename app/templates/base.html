@@ -46,7 +46,18 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-4">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div class="alert alert-{{ messages[0][0] }}">
+            {% for category, message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        
         {% block content %}
         {% endblock %}
     </div>

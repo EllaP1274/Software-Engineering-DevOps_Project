@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db
 from app.models import User, Ticket
+from app.forms import RegistrationForm, LoginForm
 
 # Define the Blueprint
 main = Blueprint('main', __name__)
@@ -23,33 +24,35 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
     
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
         role = 'regular'  # Default role
         user = User(username=username, password=password, role=role)
         db.session.add(user)
         db.session.commit()
-        flash('Account created!', 'success')
+        flash('Registration successful! Please login.', 'success')
         return redirect(url_for('main.login'))
     
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
     
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username, password=password).first()
-        if user:
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        user = User.query.filter_by(username=username).first()
+        if user and user.password == password:
             login_user(user)
             return redirect(url_for('main.dashboard'))
-        flash('Login failed. Check your username and/or password.', 'danger')
+        flash('Login failed. Please check your username and/or password or register for an account.', 'danger')
     
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 @main.route('/logout')
 @login_required
