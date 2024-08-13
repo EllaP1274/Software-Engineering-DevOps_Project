@@ -3,11 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from flask import current_app
-
-def some_function():
-    ctx = current_app._get_current_object()
-    # Use ctx as needed
 
 # Initialize Flask extensions
 db = SQLAlchemy()
