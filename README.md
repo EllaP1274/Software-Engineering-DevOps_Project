@@ -50,7 +50,7 @@ The command to build the app is
 pip install -r requirements.txt
 
 To start the render deployment run 
-gunicorn main:app
+waitress-serve --host=127.0.0.1 --port=5000 main:app
 
 The command to run the web app is 
 python main.py
