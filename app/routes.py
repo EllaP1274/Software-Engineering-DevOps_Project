@@ -16,7 +16,17 @@ def home():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    tickets = Ticket.query.all()
+    # Check if the current user is an admin
+    if current_user.role == 'admin':
+        # Fetch all tickets for admins
+        tickets = Ticket.query.all()
+    else:
+        # Fetch only the tickets created by the current user
+        tickets = Ticket.query.filter_by(user_id=current_user.id).all()
+
+    # Sort tickets: open tickets first, then closed tickets
+    tickets.sort(key=lambda t: (t.status == 'closed', t.id))
+
     return render_template('dashboard.html', tickets=tickets)
 
 @main.route('/register', methods=['GET', 'POST'])
@@ -101,6 +111,26 @@ def update_ticket(ticket_id):
         flash('Ticket not found.', 'danger')
     return redirect(url_for('main.dashboard'))
 
+@main.route('/update_ticket_status/<int:ticket_id>', methods=['POST'])
+@login_required
+def update_ticket_status(ticket_id):
+    if current_user.role != 'admin':
+        flash('You do not have permission to perform this action.', 'danger')
+        return redirect(url_for('main.dashboard'))
+    
+    ticket = Ticket.query.get(ticket_id)
+    if ticket:
+        new_status = request.form.get('status')
+        if new_status in ['open', 'closed']:
+            ticket.status = new_status
+            db.session.commit()
+            flash('Ticket status updated successfully.', 'success')
+        else:
+            flash('Invalid status.', 'danger')
+    else:
+        flash('Ticket not found.', 'danger')
+    
+    return redirect(url_for('main.dashboard'))
 
 @main.route('/delete_ticket/<int:ticket_id>', methods=['POST'])
 @login_required
