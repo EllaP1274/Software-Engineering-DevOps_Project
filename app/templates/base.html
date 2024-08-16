@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}School IT Helpdesk System{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             padding-top: 30px;
@@ -38,6 +39,26 @@
             padding: 15px;
             margin-bottom: 10px;
             border-radius: 5px;
+        }
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none; /* Hidden by default */
+            z-index: 999; /* Make sure it’s on top */
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 50px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #backToTop i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+        #backToTop.show {
+            display: block;
         }
     </style>
     {% block extra_styles %}{% endblock %}
@@ -125,5 +146,31 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     {% block extra_scripts %}{% endblock %}
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="btn btn-primary" title="Back to Top">
+        <i class="fa fa-arrow-up"></i> Back to top
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var backToTopButton = document.getElementById("backToTop");
+    
+            function toggleBackToTopButton() {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add("show");
+                } else {
+                    backToTopButton.classList.remove("show");
+                }
+            }
+    
+            window.addEventListener("scroll", toggleBackToTopButton);
+    
+            backToTopButton.addEventListener("click", function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>        
+
 </body>
 </html>
