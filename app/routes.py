@@ -89,7 +89,7 @@ def promote_user(user_id):
 def create_ticket():
     subject = request.form['subject']
     description = request.form['description']
-    ticket = Ticket(subject=subject, description=description, user_id=current_user.id)
+    ticket = Ticket(subject=subject, description=description, user_id=current_user.id, author=current_user.username)
     db.session.add(ticket)
     db.session.commit()
     flash('Ticket created!', 'success')
@@ -103,6 +103,8 @@ def update_ticket(ticket_id):
         if current_user.role == 'admin' or ticket.user_id == current_user.id:
             ticket.subject = request.form['subject']
             ticket.description = request.form['description']
+            # Optionally update the author if needed
+            # ticket.author = current_user.username
             db.session.commit()
             flash('Ticket updated!', 'success')
         else:
@@ -146,5 +148,3 @@ def delete_ticket(ticket_id):
     else:
         flash('Ticket not found.', 'danger')
     return redirect(url_for('main.dashboard'))
-
-

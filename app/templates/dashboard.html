@@ -64,6 +64,17 @@
                             {{ ticket.status|capitalize }}
                         </span>
                     </p>
+                    <p class="mb-1">
+                        <strong>Author:</strong> {{ ticket.author or 'Unknown' }}
+                    </p>
+                    <p class="mb-1">
+                        <strong>Date Created:</strong> 
+                        {% if ticket.date_created %}
+                            {{ ticket.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </p>
                     {% if current_user.role == 'admin' or ticket.user_id == current_user.id %}
                     <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ ticket.id }}" data-subject="{{ ticket.subject }}" data-description="{{ ticket.description }}">Edit</button>
                     {% if current_user.role == 'admin' %}
