@@ -9,84 +9,103 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        .ticket-container {
-            background-color: #e9ecef; /* Darker grey background color */
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 15px; /* Padding between tickets */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        }
         .status-open {
             color: green;
         }
         .status-closed {
             color: red;
         }
+        .navbar-custom {
+            background-color: #e9ecef;
+        }
+        .ticket-container {
+            background-color: #e9ecef;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .dashboard-title {
+            padding-top: -20px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 500;
+        }
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.dashboard') }}">School IT Helpdesk</a>
-            <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.register') }}">Register</a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
-
-        <h1 class="mb-4">Dashboard</h1>
-
-        <form method="post" action="{{ url_for('main.create_ticket') }}">
-            <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" class="form-control" id="subject" name="subject" required>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
+                    </li>
+                    {%endif%}
+                </ul>
             </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Create Ticket</button>
-        </form>
+        </div>
+    </nav>
 
-        <h2 class="mt-4">All Tickets</h2>
-        <div class="list-group mt-4">
-            {% for ticket in tickets %}
-            <div class="ticket-container list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="mb-1">{{ ticket.subject }}</h5>
-                    <p class="mb-1">{{ ticket.description }}</p>
-                    <p class="mb-1">
-                        <strong>Status:</strong> 
-                        <span class="{% if ticket.status == 'open' %}status-open{% else %}status-closed{% endif %}">
-                            {{ ticket.status|capitalize }}
-                        </span>
-                    </p>
-                    <p class="mb-1">
-                        <strong>Created by:</strong> {{ ticket.author }}
-                    </p>
-                    <p class="mb-1">
-                        <strong>Date Created:</strong> {{ ticket.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
-                    </p>
-                    {% if current_user.role == 'admin' or ticket.user_id == current_user.id %}
-                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ ticket.id }}" data-subject="{{ ticket.subject }}" data-description="{{ ticket.description }}">Edit</button>
-                    {% if current_user.role == 'admin' %}
-                    <button class="btn btn-danger btn-sm ml-2" data-toggle="modal" data-target="#deleteModal" data-id="{{ ticket.id }}">Delete</button>
-                    <button class="btn btn-info btn-sm ml-2" data-toggle="modal" data-target="#statusModal" data-id="{{ ticket.id }}" data-status="{{ ticket.status }}">Change Status</button>
-                    {% endif %}
-                    {% endif %}
+    <div class="container mt-5 pt-5">
+        <h1 class="dashboard-title">Dashboard</h1>
+
+        <div class="dashboard-section">
+            <form method="post" action="{{ url_for('main.create_ticket') }}">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" class="form-control" id="subject" name="subject" required>
                 </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Ticket</button>
+            </form>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>All Tickets</h2>
+            <div class="list-group mt-4">
+                {% for ticket in tickets %}
+                <div class="list-group-item ticket-container d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">{{ ticket.subject }}</h5>
+                        <p class="mb-1">{{ ticket.description }}</p>
+                        <p class="mb-1">
+                            <strong>Status:</strong> 
+                            <span class="{% if ticket.status == 'open' %}status-open{% else %}status-closed{% endif %}">
+                                {{ ticket.status|capitalize }}
+                            </span>
+                        </p>
+                        <p class="mb-1">
+                            <strong>Date Created:</strong> {{ ticket.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
+                        </p>
+                        <p class="mb-1">
+                            <strong>Author:</strong> {{ ticket.author }}
+                        </p>
+                        {% if current_user.role == 'admin' or ticket.user_id == current_user.id %}
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ ticket.id }}" data-subject="{{ ticket.subject }}" data-description="{{ ticket.description }}">Edit</button>
+                        {% if current_user.role == 'admin' %}
+                        <button class="btn btn-danger btn-sm ml-2" data-toggle="modal" data-target="#deleteModal" data-id="{{ ticket.id }}">Delete</button>
+                        <button class="btn btn-info btn-sm ml-2" data-toggle="modal" data-target="#statusModal" data-id="{{ ticket.id }}" data-status="{{ ticket.status }}">Change Status</button>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
             <!-- Flash Messages -->
