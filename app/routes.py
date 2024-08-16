@@ -17,12 +17,7 @@ def home():
 @login_required
 def dashboard():
     # Check if the current user is an admin
-    if current_user.role == 'admin':
-        # Fetch all tickets for admins
-        tickets = Ticket.query.all()
-    else:
-        # Fetch only the tickets created by the current user
-        tickets = Ticket.query.filter_by(user_id=current_user.id).all()
+    tickets = Ticket.query.all()
 
     # Sort tickets: open tickets first, then closed tickets
     tickets.sort(key=lambda t: (t.status == 'closed', t.id))
