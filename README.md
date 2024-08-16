@@ -64,3 +64,5 @@ The command to run the web app is
 python main.py
 
 You can run python delete_user.py to delete any unwanted users.
+
+This is the link to the hosted web application - https://software-engineering-agile-project.onrender.com
