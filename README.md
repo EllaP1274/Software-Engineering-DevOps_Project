@@ -46,6 +46,9 @@ Students: Report technical issues with school-provided devices, such as laptops,
 Teachers: Submit requests for technical support in their classrooms, such as fixing projectors, or internet issues, or setting up software.
 IT Staff: Use the system to track, manage, and resolve reported issues. They can update, and mark tickets as resolved.
 
+Tickets are ordered by status, so open ones appear at the top of all tickets and closed tickets are aat the bottom. 
+Tickets are also ordered based on date and time of creation. New, open tickets are nearer the top of all tickets so if a ticket is urgent it can be handeled ASAP.
+
 The command to build the app is
 pip install -r requirements.txt
 

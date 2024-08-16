@@ -16,12 +16,11 @@ def home():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    # Check if the current user is an admin
-    tickets = Ticket.query.all()
-
-    # Sort tickets: open tickets first, then closed tickets
-    tickets.sort(key=lambda t: (t.status == 'closed', t.id))
-
+    # First, order by status (open before closed), then by date created (newest first)
+    tickets = Ticket.query.order_by(
+        Ticket.status.desc(),   # Sort by status: 'open' before 'closed'
+        Ticket.date_created.desc()  # Within each status, sort by creation date (newest first)
+    ).all()
     return render_template('dashboard.html', tickets=tickets)
 
 @main.route('/register', methods=['GET', 'POST'])
