@@ -79,6 +79,11 @@ def promote_user(user_id):
         flash(f'{user.username} has been promoted to admin.', 'success')
     return redirect(url_for('main.dashboard'))
 
+@main.route('/users')
+def view_users():
+    users = User.query.all()  # Fetch all users from the database
+    return render_template('view_users.html', users=users)
+
 @main.route('/create_ticket', methods=['POST'])
 @login_required
 def create_ticket():

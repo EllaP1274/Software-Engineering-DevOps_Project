@@ -50,6 +50,12 @@
                 <ul class="navbar-nav ml-auto">
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.view_users') }}">View Users</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
                     </li>
                     {%endif%}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}View Users - School IT Helpdesk{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .user-container {
+        background-color: #e9ecef;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    .user-table {
+        background-color: #ffffff;
+        border-radius: 5px;
+    }
+    .user-table th, .user-table td {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-3">
+    <h1>All Users</h1>
+    <div class="dashboard-section">
+        <table class="table user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="user-container">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.role }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
