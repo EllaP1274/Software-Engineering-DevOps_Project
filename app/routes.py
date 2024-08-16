@@ -92,7 +92,7 @@ def create_ticket():
     ticket = Ticket(subject=subject, description=description, user_id=current_user.id, author=current_user.username)
     db.session.add(ticket)
     db.session.commit()
-    flash('Ticket created!', 'success')
+    flash('Ticket created successfully!', 'success')
     return redirect(url_for('main.dashboard'))
 
 @main.route('/update_ticket/<int:ticket_id>', methods=['POST'])
@@ -106,7 +106,7 @@ def update_ticket(ticket_id):
             # Optionally update the author if needed
             # ticket.author = current_user.username
             db.session.commit()
-            flash('Ticket updated!', 'success')
+            flash('Ticket updated successfully!', 'success')
         else:
             flash('Access denied. You can only edit your own tickets.', 'danger')
     else:
@@ -126,7 +126,10 @@ def update_ticket_status(ticket_id):
         if new_status in ['open', 'closed']:
             ticket.status = new_status
             db.session.commit()
-            flash('Ticket status updated successfully.', 'success')
+            if new_status == 'closed':
+                flash('Ticket closed successfully!', 'success')
+            else:
+                flash('Ticket opened successfully!', 'success')
         else:
             flash('Invalid status.', 'danger')
     else:
@@ -142,7 +145,7 @@ def delete_ticket(ticket_id):
         if current_user.role == 'admin':
             db.session.delete(ticket)
             db.session.commit()
-            flash('Ticket deleted!', 'success')
+            flash('Ticket deleted successfully!', 'success')
         else:
             flash('Access denied. Only admins can delete tickets.', 'danger')
     else:

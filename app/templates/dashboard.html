@@ -9,18 +9,18 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
+        .ticket-container {
+            background-color: #e9ecef; /* Darker grey background color */
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px; /* Padding between tickets */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
         .status-open {
             color: green;
         }
         .status-closed {
             color: red;
-        }
-        .ticket-item {
-            margin-bottom: 1.5rem; /* Space between ticket containers */
-            padding: 1rem; /* Space inside the ticket container */
-            border: 1px solid #ccc; /* Border color */
-            border-radius: 0.25rem; /* Rounded corners for the border */
-            background-color: #e9ecef; /* Darker grey background color */
         }
     </style>
 </head>
@@ -61,7 +61,7 @@
         <h2 class="mt-4">All Tickets</h2>
         <div class="list-group mt-4">
             {% for ticket in tickets %}
-            <div class="list-group-item ticket-item">
+            <div class="ticket-container list-group-item d-flex justify-content-between align-items-center">
                 <div>
                     <h5 class="mb-1">{{ ticket.subject }}</h5>
                     <p class="mb-1">{{ ticket.description }}</p>
@@ -72,15 +72,10 @@
                         </span>
                     </p>
                     <p class="mb-1">
-                        <strong>Author:</strong> {{ ticket.author or 'Unknown' }}
+                        <strong>Created by:</strong> {{ ticket.author }}
                     </p>
                     <p class="mb-1">
-                        <strong>Date Created:</strong> 
-                        {% if ticket.date_created %}
-                            {{ ticket.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
-                        {% else %}
-                            N/A
-                        {% endif %}
+                        <strong>Date Created:</strong> {{ ticket.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
                     </p>
                     {% if current_user.role == 'admin' or ticket.user_id == current_user.id %}
                     <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ ticket.id }}" data-subject="{{ ticket.subject }}" data-description="{{ ticket.description }}">Edit</button>
@@ -94,6 +89,21 @@
             {% endfor %}
         </div>
     </div>
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
 
     <!-- Edit Ticket Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -203,6 +213,11 @@
             var modal = $(this);
             modal.find('#statusSelect').val(status);
             modal.find('#statusForm').attr('action', '/update_ticket_status/' + ticketId);
+        });
+
+        // Display flash messages
+        $(document).ready(function () {
+            $('.alert').alert();
         });
     </script>
 </body>
