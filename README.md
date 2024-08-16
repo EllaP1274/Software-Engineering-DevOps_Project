@@ -1,5 +1,5 @@
 # Software-Engineering-Agile_Project
-This project is for my Software Engineering &amp; Agile assignment
+This project is for my Software Engineering and Agile assignment
 
 To install python
 python3
@@ -40,6 +40,8 @@ user.role = 'admin'
 db.session.commit()
 
 If you delete a record just refresh the database and you will see the record is gone.
+
+All the dependancies are in the requirements.txt file.
 
 This app is an IT Helpdesk System
 Students: Report technical issues with school-provided devices, such as laptops, tablets, or access to online resources.
