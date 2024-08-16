@@ -48,6 +48,7 @@ IT Staff: Use the system to track, manage, and resolve reported issues. They can
 
 Tickets are ordered by status, so open ones appear at the top of all tickets and closed tickets are aat the bottom. 
 Tickets are also ordered based on date and time of creation. New, open tickets are nearer the top of all tickets so if a ticket is urgent it can be handeled ASAP.
+If a ticket is closed the edit button will not appear as you cannot edit a ticket that is closed. If the ticket is re-opened, the edit button appears and you can then edit the ticket.
 
 The command to build the app is
 pip install -r requirements.txt

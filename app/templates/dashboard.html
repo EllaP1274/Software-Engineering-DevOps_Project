@@ -40,12 +40,16 @@
                     <p class="mb-1">
                         <strong>Author:</strong> {{ ticket.author }}
                     </p>
-                    {% if current_user.role == 'admin' or ticket.user_id == current_user.id %}
+
+                    <!-- Show Edit button only if the ticket is open -->
+                    {% if ticket.status == 'open' and (current_user.role == 'admin' or ticket.user_id == current_user.id) %}
                     <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ ticket.id }}" data-subject="{{ ticket.subject }}" data-description="{{ ticket.description }}">Edit</button>
+                    {% endif %}
+
+                    <!-- Delete and Change Status buttons available to admin -->
                     {% if current_user.role == 'admin' %}
                     <button class="btn btn-danger btn-sm ml-2" data-toggle="modal" data-target="#deleteModal" data-id="{{ ticket.id }}">Delete</button>
                     <button class="btn btn-info btn-sm ml-2" data-toggle="modal" data-target="#statusModal" data-id="{{ ticket.id }}" data-status="{{ ticket.status }}">Change Status</button>
-                    {% endif %}
                     {% endif %}
                 </div>
             </div>
