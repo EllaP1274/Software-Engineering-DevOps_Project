@@ -15,6 +15,13 @@
         .status-closed {
             color: red;
         }
+        .ticket-item {
+            margin-bottom: 1.5rem; /* Space between ticket containers */
+            padding: 1rem; /* Space inside the ticket container */
+            border: 1px solid #ccc; /* Border color */
+            border-radius: 0.25rem; /* Rounded corners for the border */
+            background-color: #e9ecef; /* Darker grey background color */
+        }
     </style>
 </head>
 <body>
@@ -54,7 +61,7 @@
         <h2 class="mt-4">All Tickets</h2>
         <div class="list-group mt-4">
             {% for ticket in tickets %}
-            <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="list-group-item ticket-item">
                 <div>
                     <h5 class="mb-1">{{ ticket.subject }}</h5>
                     <p class="mb-1">{{ ticket.description }}</p>
