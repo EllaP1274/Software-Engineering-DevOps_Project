@@ -65,4 +65,10 @@ python main.py
 
 You can run python delete_user.py to delete any unwanted users.
 
+In the app/__init__.py file, this line 
+def create_app(config_class='app.config.Config'): 
+Change Config to TestConfig like this 
+def create_app(config_class='app.config.TestConfig'):
+and then run pytest to see results of tests
+
 This is the link to the hosted web application - https://software-engineering-agile-project.onrender.com

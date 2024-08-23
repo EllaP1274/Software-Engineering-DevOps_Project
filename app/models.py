@@ -6,7 +6,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
-    role = db.Column(db.String(50), nullable=False)  # 'admin' or 'regular'
+    role = db.Column(db.String(50), nullable=False, default='user')  # 'admin' or 'regular'
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -20,3 +20,14 @@ class Ticket(db.Model):
     author = db.Column(db.String(150), nullable=False)  # New column for author
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     user = db.relationship('User', backref=db.backref('tickets', lazy=True))
+
+    def __init__(self, subject, description, status, user_id, author, date_created):
+        self.subject = subject
+        self.description = description
+        self.status = status
+        self.user_id = user_id
+        self.author = author
+        self.date_created = date_created
+
+    def __repr__(self):
+        return f'<Ticket {self.subject}>'

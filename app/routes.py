@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app import db
 from app.models import User, Ticket
 from app.forms import RegistrationForm, LoginForm, TicketForm
+from datetime import datetime
 
 # Define the Blueprint
 main = Blueprint('main', __name__)
@@ -95,7 +96,9 @@ def create_ticket():
     if form.validate():
         subject = form.subject.data
         description = form.description.data
-        ticket = Ticket(subject=subject, description=description, user_id=current_user.id, author=current_user.username)
+        status = form.status.data
+        date_created = datetime.utcnow()
+        ticket = Ticket(subject=subject, description=description, user_id=current_user.id, status=status, author=current_user.username, date_created=date_created)
         db.session.add(ticket)
         db.session.commit()
         flash('Ticket created successfully!', 'success')
@@ -106,7 +109,7 @@ def create_ticket():
                 flash(error, 'danger')
     return redirect(url_for('main.dashboard'))
 
-@main.route('/update_ticket/<int:ticket_id>', methods=['POST'])
+@main.route('/update_ticket/<int:ticket_id>', methods=['POST'] )
 @login_required
 def update_ticket(ticket_id):
     form = TicketForm(request.form)
