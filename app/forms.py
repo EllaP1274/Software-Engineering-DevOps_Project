@@ -1,10 +1,28 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, EqualTo, Regexp
-from wtforms import ValidationError
+from wtforms import Form, StringField, PasswordField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, Length, EqualTo, Regexp, ValidationError
+import re
 
-class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=4, max=150)])
+def validate_username(form, field):
+    # Allow "admin" to bypass validation
+    if field.data == 'admin':
+        return
+
+    # Check if the username length is less than 6 characters
+    if len(field.data) < 6:
+        raise ValidationError('Username must be at least 6 characters long.')
+    
+    # Check if the username contains more than 3 numbers
+    if len(re.findall(r'\d', field.data)) > 3:
+        raise ValidationError('Username must contain no more than 3 numbers.')
+
+def validate_ticket_field(form, field):
+    if len(field.data) < 6:
+        raise ValidationError('Field must be at least 6 characters long.')
+    if len(re.findall(r'\d', field.data)) > 3:
+        raise ValidationError('Field must contain no more than 3 numbers.')
+
+class RegistrationForm(Form):
+    username = StringField('Username', validators=[DataRequired(), validate_username])
     password = PasswordField('Password', validators=[
         DataRequired(),
         Length(min=6, message='Password must be at least 6 characters long'),
@@ -16,7 +34,12 @@ class RegistrationForm(FlaskForm):
     ])
     submit = SubmitField('Register')
 
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+class LoginForm(Form):
+    username = StringField('Username', validators=[DataRequired(), validate_username])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class TicketForm(Form):
+    subject = StringField('Subject', validators=[DataRequired(), validate_ticket_field])
+    description = TextAreaField('Description', validators=[DataRequired(), validate_ticket_field])
+    submit = SubmitField('Submit')

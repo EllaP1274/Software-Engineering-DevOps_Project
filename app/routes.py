@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db
 from app.models import User, Ticket
-from app.forms import RegistrationForm, LoginForm
+from app.forms import RegistrationForm, LoginForm, TicketForm
 
 # Define the Blueprint
 main = Blueprint('main', __name__)
@@ -28,8 +28,8 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
 
-    form = RegistrationForm()
-    if form.validate_on_submit():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
         username = form.username.data
         password = form.password.data
         role = 'regular'  # Default role
@@ -46,15 +46,20 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
 
-    form = LoginForm()
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-        user = User.query.filter_by(username=username, password=password).first()
-        if user:
-            login_user(user)
-            return redirect(url_for('main.dashboard'))
-        flash('Login failed. Check your username and/or password.', 'danger')
+    form = LoginForm(request.form)
+    if request.method == 'POST':
+        if form.validate():
+            username = form.username.data
+            password = form.password.data
+            user = User.query.filter_by(username=username, password=password).first()
+            if user:
+                login_user(user)
+                return redirect(url_for('main.dashboard'))
+            flash('Login failed. Check your username and/or password.', 'danger')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(error, 'danger')
 
     return render_template('login.html', form=form)
 
@@ -86,30 +91,41 @@ def view_users():
 @main.route('/create_ticket', methods=['POST'])
 @login_required
 def create_ticket():
-    subject = request.form['subject']
-    description = request.form['description']
-    ticket = Ticket(subject=subject, description=description, user_id=current_user.id, author=current_user.username)
-    db.session.add(ticket)
-    db.session.commit()
-    flash('Ticket created successfully!', 'success')
+    form = TicketForm(request.form)
+    if form.validate():
+        subject = form.subject.data
+        description = form.description.data
+        ticket = Ticket(subject=subject, description=description, user_id=current_user.id, author=current_user.username)
+        db.session.add(ticket)
+        db.session.commit()
+        flash('Ticket created successfully!', 'success')
+        return redirect(url_for('main.dashboard'))
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(error, 'danger')
     return redirect(url_for('main.dashboard'))
 
 @main.route('/update_ticket/<int:ticket_id>', methods=['POST'])
 @login_required
 def update_ticket(ticket_id):
-    ticket = Ticket.query.get(ticket_id)
-    if ticket:
-        if current_user.role == 'admin' or ticket.user_id == current_user.id:
-            ticket.subject = request.form['subject']
-            ticket.description = request.form['description']
-            # Optionally update the author if needed
-            # ticket.author = current_user.username
-            db.session.commit()
-            flash('Ticket updated successfully!', 'success')
+    form = TicketForm(request.form)
+    if form.validate():
+        ticket = Ticket.query.get(ticket_id)
+        if ticket:
+            if current_user.role == 'admin' or ticket.user_id == current_user.id:
+                ticket.subject = form.subject.data
+                ticket.description = form.description.data
+                db.session.commit()
+                flash('Ticket updated successfully!', 'success')
+            else:
+                flash('Access denied. You can only edit your own tickets.', 'danger')
         else:
-            flash('Access denied. You can only edit your own tickets.', 'danger')
+            flash('Ticket not found.', 'danger')
     else:
-        flash('Ticket not found.', 'danger')
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(error, 'danger')
     return redirect(url_for('main.dashboard'))
 
 @main.route('/update_ticket_status/<int:ticket_id>', methods=['POST'])
