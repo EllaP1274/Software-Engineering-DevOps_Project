@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, PasswordField, SubmitField, TextAreaField, SelectField
+from wtforms import Form, StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, Regexp, ValidationError
 import re
 
@@ -16,8 +16,6 @@ def validate_username(form, field):
         raise ValidationError('Username must contain no more than 3 numbers.')
 
 def validate_ticket_field(form, field):
-    if len(field.data) < 6:
-        raise ValidationError('Field must be at least 6 characters long.')
     if len(re.findall(r'\d', field.data)) > 3:
         raise ValidationError('Field must contain no more than 3 numbers.')
 
@@ -40,6 +38,6 @@ class LoginForm(Form):
     submit = SubmitField('Login')
 
 class TicketForm(Form):
-    subject = StringField('Subject', validators=[DataRequired(), validate_ticket_field])
-    description = TextAreaField('Description', validators=[DataRequired(), validate_ticket_field])
+    subject = StringField('Subject', validators=[DataRequired(), validate_ticket_field, Length(min=6, max=150)])
+    description = TextAreaField('Description', validators=[DataRequired(), validate_ticket_field, Length(min=6)])
     submit = SubmitField('Submit')

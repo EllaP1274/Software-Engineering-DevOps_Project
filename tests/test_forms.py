@@ -21,16 +21,14 @@ def test_registration_form_invalid_username():
 def test_ticket_form_valid():
     form = TicketForm(data=dict(
         subject='Test Subject',
-        description='Test Description',
-        status='Open'
+        description='Test Description'
     ))
     assert form.validate() is True
 
 def test_ticket_form_invalid_description():
     form = TicketForm(data=dict(
         subject='Subject',
-        description='Short',
-        status='Open'
+        description='Short'
     ))
     assert form.validate() is False
     assert 'Field must be at least 6 characters long.' in form.errors['description']

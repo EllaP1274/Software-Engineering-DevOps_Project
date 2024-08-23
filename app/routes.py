@@ -17,12 +17,12 @@ def home():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    # First, order by status (open before closed), then by date created (newest first)
     tickets = Ticket.query.order_by(
-        Ticket.status.desc(),   # Sort by status: 'open' before 'closed'
-        Ticket.date_created.desc()  # Within each status, sort by creation date (newest first)
+        Ticket.status.desc(),
+        Ticket.date_created.desc()
     ).all()
-    return render_template('dashboard.html', tickets=tickets)
+    ticket_form = TicketForm()
+    return render_template('dashboard.html', tickets=tickets, form=ticket_form)
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():
@@ -96,9 +96,7 @@ def create_ticket():
     if form.validate():
         subject = form.subject.data
         description = form.description.data
-        status = form.status.data
-        date_created = datetime.utcnow()
-        ticket = Ticket(subject=subject, description=description, user_id=current_user.id, status=status, author=current_user.username, date_created=date_created)
+        ticket = Ticket(subject=subject, description=description, user_id=current_user.id, author=current_user.username,status='open', date_created=datetime.utcnow())
         db.session.add(ticket)
         db.session.commit()
         flash('Ticket created successfully!', 'success')
@@ -107,9 +105,9 @@ def create_ticket():
         for field, errors in form.errors.items():
             for error in errors:
                 flash(error, 'danger')
-    return redirect(url_for('main.dashboard'))
+        return redirect(url_for('main.dashboard'))
 
-@main.route('/update_ticket/<int:ticket_id>', methods=['POST'] )
+@main.route('/update_ticket/<int:ticket_id>', methods=['POST'])
 @login_required
 def update_ticket(ticket_id):
     form = TicketForm(request.form)

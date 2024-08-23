@@ -142,32 +142,32 @@
 
 {% block extra_scripts %}
 <script>
-    $('#editModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var ticketId = button.data('id');
-        var subject = button.data('subject');
-        var description = button.data('description');
-        var modal = $(this);
-        modal.find('#editSubject').val(subject);
-        modal.find('#editDescription').val(description);
-        modal.find('#editTicketForm').attr('action', '/update_ticket/' + ticketId);
-    });
+$('#editModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var ticketId = button.data('id');
+    var subject = button.data('subject');
+    var description = button.data('description');
+    var modal = $(this);
+    modal.find('#editSubject').val(subject);
+    modal.find('#editDescription').val(description);
+    modal.find('#editTicketForm').attr('action', '/update_ticket/' + ticketId);
+});
 
-    $('#deleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var ticketId = button.data('id');
-        var modal = $(this);
-        modal.find('#deleteTicketForm').attr('action', '/delete_ticket/' + ticketId);
-    });
+$('#deleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var ticketId = button.data('id');
+    var modal = $(this);
+    modal.find('#deleteTicketForm').attr('action', '/delete_ticket/' + ticketId);
+});
 
-    $('#statusModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var ticketId = button.data('id');
-        var status = button.data('status');
-        var modal = $(this);
-        modal.find('#statusSelect').val(status);
-        modal.find('#statusForm').attr('action', '/update_ticket_status/' + ticketId);
-    });
+$('#statusModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var ticketId = button.data('id');
+    var status = button.data('status');
+    var modal = $(this);
+    modal.find('#statusSelect').val(status);
+    modal.find('#statusForm').attr('action', '/update_ticket_status/' + ticketId);
+});
 
     // Display flash messages
     $(document).ready(function () {
