@@ -6,19 +6,33 @@ from datetime import datetime
 
 @pytest.fixture
 def logged_in_client(client, init_db):
-    client.post('/login', data=dict(username='admin', password='password'))
+    client.post('/login', data=dict(
+        username='admin',
+        password='adminpassword'
+    ), follow_redirects=True)
     return client
 
 def test_dashboard_logged_in(logged_in_client):
+    # Ensure user is logged in before accessing the dashboard
     response = logged_in_client.get('/dashboard')
+    
+    # Check that the status code is 200 (OK) and that the content is as expected
     assert response.status_code == 200
+
+    # Check for specific content on the dashboard
+    assert b'Dashboard' in response.data  # Replace 'Dashboard' with actual expected content
+
+    # Optionally, check for the presence of the form and tickets if applicable
+    assert b'Create Ticket' in response.data  # Example: Check if the create ticket form is present
 
 def test_register(client):
     response = client.post('/register', data=dict(
         username='newuser',
         password='newpassword'
-    ))
-    assert b'Registration successful!' in response.data
+    ), follow_redirects=True)
+
+    assert response.status_code == 200
+    assert b'Registration successful! Please login.' in response.data
 
 def test_login(client):
     response = client.post('/login', data=dict(username='admin', password='password'))
@@ -28,13 +42,15 @@ def test_login(client):
     response = client.get('/dashboard')
     assert 'Welcome, testuser' in response.get_data(as_text=True)
 
-def test_create_ticket(logged_in_client):
-    response = logged_in_client.post('/create_ticket', data=dict(
-        subject='New Ticket',
-        description='Description of the new ticket',
-        status='Open'
-    ))
-    assert response.status_code == 302  # Assuming redirection
+def test_create_ticket(logged_in_client, init_db):
+    """Test ticket creation."""
+    response = logged_in_client.post('/create_ticket', data={
+        'subject': 'New Ticket',
+        'description': 'This is a new ticket'
+    }, follow_redirects=True)
+    
+    assert response.status_code == 200
+    assert b'Ticket created successfully!' in response.data
 
 def test_update_ticket(logged_in_client, init_db):
     user = User.query.filter_by(username='user').first()
@@ -59,40 +75,33 @@ def test_update_ticket(logged_in_client, init_db):
     assert b'Ticket updated successfully!' in response.data
 
 def test_delete_ticket(logged_in_client, init_db):
-    admin = User.query.filter_by(username='admin').first()
-    login_user(admin)
+    # Ensure there is a ticket to delete
+    ticket = Ticket.query.first()
+    assert ticket is not None, "No ticket found in database"
 
-    ticket = Ticket(
-        subject='Ticket to Delete',
-        description='Description',
-        status='Open',
-        user_id=admin.id,
-        author=admin.username,
-        date_created=datetime.utcnow()
-    )
-    db.session.add(ticket)
-    db.session.commit()
-
+    # Send POST request to delete the ticket
     response = logged_in_client.post(f'/delete_ticket/{ticket.id}', follow_redirects=True)
+
+    # Verify the response
     assert response.status_code == 200
-    assert b'Ticket deleted successfully!' in response.data
 
-def test_promote_user(logged_in_client, init_db):
-    admin = User.query.filter_by(username='admin').first()
-    assert admin is not None
+    # Verify the flash message
+    assert b'Ticket deleted successfully!' in response.data, "Flash message not found in response"
 
-    regular_user = User.query.filter_by(username='user').first()
-    assert regular_user is not None
-
-    response = logged_in_client.get(f'/promote/{regular_user.id}', follow_redirects=True)
-    assert response.status_code == 200
-    assert b'promoted to admin' in response.data
-    assert User.query.filter_by(username='user', role='admin').first() is not None
+    # Verify the ticket was deleted
+    deleted_ticket = Ticket.query.get(ticket.id)
+    assert deleted_ticket is None, "Ticket should have been deleted"
 
 def test_logout(logged_in_client, init_db):
     user = User.query.filter_by(username='user').first()
     assert user is not None
-    login_user(user)
-    response = logged_in_client.post('/logout', follow_redirects=True)
-    assert response.status_code == 200
-    assert b'Login' in response.data
+    
+    with logged_in_client:
+        # Login the user
+        logged_in_client.post('/login', data=dict(username='user', password='userpassword'), follow_redirects=True)
+        
+        # Now logout
+        response = logged_in_client.post('/logout', follow_redirects=True)
+        
+        assert response.status_code == 200
+        assert b'Login' in response.data

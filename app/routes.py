@@ -70,20 +70,6 @@ def logout():
     logout_user()
     return redirect(url_for('main.login'))
 
-@main.route('/promote/<int:user_id>')
-@login_required
-def promote_user(user_id):
-    if current_user.role != 'admin':
-        flash('Access denied.', 'danger')
-        return redirect(url_for('main.dashboard'))
-    
-    user = User.query.get(user_id)
-    if user:
-        user.role = 'admin'
-        db.session.commit()
-        flash(f'{user.username} has been promoted to admin.', 'success')
-    return redirect(url_for('main.dashboard'))
-
 @main.route('/users')
 def view_users():
     users = User.query.all()  # Fetch all users from the database
