@@ -8,46 +8,45 @@ from app.config import TestConfig
 def app():
     app = create_app(TestConfig)
     with app.app_context():
-        db.create_all()  # Create tables
+        # Create all tables in the database
+        db.create_all()
         yield app
+        # Cleanup after tests are done
         db.session.remove()
-        db.drop_all()  # Drop tables after tests
+        db.drop_all()
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def client(app):
     return app.test_client()
 
 @pytest.fixture(scope='function')
 def init_db(app):
+    # Clear any existing data and create new tables before each test
     with app.app_context():
-        db.create_all()  # Ensure all tables are created before each test
-
-        # Clear any existing data
+        db.create_all()
+        
+        # Clear existing data
         User.query.delete()
-        Ticket.query.delete()  # Clear the Ticket table
-
-        # Create test users only
+        Ticket.query.delete()
+        
+        # Add new data
         admin = User(username='admin', password='adminpassword', role='admin')
         regular_user = User(username='user', password='userpassword', role='regular')
-
+        
         db.session.add(admin)
         db.session.add(regular_user)
         db.session.commit()
-
-         # Create a test ticket
+        
+        # Add a test ticket
         ticket = Ticket(
             subject='Test Ticket',
             description='This is a test ticket.',
             status='Open',
-            user_id=regular_user.id,  # Associate with the regular user
+            user_id=regular_user.id,
             author=regular_user.username,
             date_created=datetime.utcnow()
         )
         db.session.add(ticket)
         db.session.commit()
-
-    yield db  # Provide the initialized database to the test
-
-    with app.app_context():
-        db.session.remove()
-        db.drop_all()  # Drop tables after each test
+    
+    yield db
