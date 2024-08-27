@@ -8,9 +8,8 @@ from datetime import datetime
 # Define the Blueprint
 main = Blueprint('main', __name__)
 
-@main.head("/health")
-@main.get("/health")
-async def health_check():
+@main.route('/health', methods=['GET', 'HEAD'])
+def health_check():
     return "ok"
 
 @main.route('/')
