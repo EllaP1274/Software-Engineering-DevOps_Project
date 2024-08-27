@@ -8,6 +8,11 @@ from datetime import datetime
 # Define the Blueprint
 main = Blueprint('main', __name__)
 
+@main.head("/health")
+@main.get("/health")
+async def health_check():
+    return "ok"
+
 @main.route('/')
 def home():
     if current_user.is_authenticated:

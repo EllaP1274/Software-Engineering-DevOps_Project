@@ -10,7 +10,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 migrate = Migrate()
 
-def create_app(config_class='app.config.Config'): #change Config to TestConfig and then run pytest to see results of tests
+def create_app(config_class='app.config.TestConfig'): #change Config to TestConfig and then run pytest to see results of tests
     app = Flask(__name__)
     # Load configuration
     app.config.from_object(config_class)
