@@ -24,7 +24,8 @@ class RegistrationForm(Form):
     password = PasswordField('Password', validators=[
         DataRequired(),
         Length(min=6, message='Password must be at least 6 characters long'),
-        Regexp(r'(?=.*\d.*\d)', message='Password must include at least 2 numbers')
+        Regexp(r'(?=.*\d.*\d)', message='Password must include at least 2 numbers'),
+        Regexp(r'(?=.*[A-Za-z]{6,})', message='Password must include at least 6 letters')
     ])
     confirm_password = PasswordField('Confirm Password', validators=[
         DataRequired(),
