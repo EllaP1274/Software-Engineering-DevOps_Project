@@ -4,6 +4,8 @@ This project is for my Software Engineering and Agile assignment
 To install python
 python3
 
+Make sure to cd into Software-Engineering-Agile_Project
+
 To create a virtual environment
 python3 -m venv venv
 
@@ -57,18 +59,11 @@ There is 1 admin user. The username is: admin, and the password is: password.
 The command to build the app is
 pip install -r requirements.txt
 
-To start the render deployment run 
-waitress-serve --host=127.0.0.1 --port=5000 main:app
-
 The command to run the web app is 
 python main.py
 
 You can run python delete_user.py to delete any unwanted users.
 
-In the app/__init__.py file, this line 
-def create_app(config_class='app.config.Config'): 
-Change Config to TestConfig like this 
-def create_app(config_class='app.config.TestConfig'):
-and then run pytest to see results of tests
+You can run pytest to see results of tests.
 
 This is the link to the hosted web application - https://software-engineering-agile-project.onrender.com
