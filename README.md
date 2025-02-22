@@ -1,10 +1,10 @@
-# Software-Engineering-Agile_Project
-This project is for my Software Engineering and Agile assignment
+# Software-Engineering-DevOps_Project
+This project is for my Software Engineering and DevOps assignment
 
 To install python
 python3
 
-Make sure to cd into Software-Engineering-Agile_Project
+Make sure to cd into Software-Engineering-DevOps_Project
 
 To create a virtual environment
 python3 -m venv venv
@@ -66,4 +66,4 @@ You can run python delete_user.py to delete any unwanted users.
 
 You can run pytest to see results of tests.
 
-This is the link to the hosted web application - https://software-engineering-agile-project.onrender.com
+This is the link to the hosted web application - https://software-engineering-devops-project.onrender.com
