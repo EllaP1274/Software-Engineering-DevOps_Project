@@ -54,7 +54,7 @@ jobs:
 
     - name: Run ZAP Security Scan
       run: |
-        docker run -u zap --rm -v $(pwd):/zap/wrk:rw owasp/zap2docker-stable zap-full-scan.py -t https://software-engineering-devops-project.onrender.com -g gen.conf -r zap-report.html
+         docker run -u zap --rm -v $(pwd):/zap/wrk:rw owasp/zap2docker zap-full-scan.py -t https://software-engineering-devops-project.onrender.com -g gen.conf -r zap-report.html
       env:
         ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
 
