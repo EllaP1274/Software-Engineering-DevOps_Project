@@ -33,11 +33,6 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
 
-@main.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.dashboard'))
-
     form = RegistrationForm(request.form)
     if request.method == 'POST':
         if form.validate():
