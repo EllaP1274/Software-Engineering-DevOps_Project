@@ -33,17 +33,23 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
 
-    form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        username = form.username.data
-        password = form.password.data
-        role = 'regular'  # Default role
-        user = User(username=username, password=password, role=role)
-        db.session.add(user)
-        db.session.commit()
-        flash('Registration successful! Please login.', 'success')
-        return redirect(url_for('main.login'))
+@main.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.dashboard'))
 
+    form = RegistrationForm(request.form)
+    if request.method == 'POST':
+        if form.validate():
+            username = form.username.data
+            password = form.password.data
+            role = 'regular'  # Default role
+            user = User(username=username, password=password, role=role)
+            db.session.add(user)
+            db.session.commit()
+            flash('Registration successful! Please login.', 'success')
+            return redirect(url_for('main.login'))
+        # Remove flashing of validation errors here
     return render_template('register.html', form=form)
 
 @main.route('/login', methods=['GET', 'POST'])
