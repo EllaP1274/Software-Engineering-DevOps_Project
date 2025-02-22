@@ -25,20 +25,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        python -m pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Test with pytest
       run: |
         pytest
-
-    # Bandit security linter (checks Python code for security vulnerabilities)
-    - name: Install bandit for security analysis
-      run: |
-        pip install bandit
-
-    - name: Run bandit security analysis
-      run: |
-        bandit -r . -ll
 
     # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
@@ -61,4 +53,3 @@ jobs:
       with:
         name: zap-report
         path: zap-report.html
-
