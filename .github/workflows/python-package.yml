@@ -60,7 +60,7 @@ jobs:
 
     # Optional: Save the ZAP report as an artifact
     - name: Upload ZAP report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: zap-report
         path: zap-report.html
