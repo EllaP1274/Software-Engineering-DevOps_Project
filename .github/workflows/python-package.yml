@@ -32,6 +32,7 @@ jobs:
       run: |
         pytest
 
+
     # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
       run: |
@@ -42,7 +43,7 @@ jobs:
     - name: Run ZAP Security Scan
       run: |
           echo "Running ZAP security scan..."
-          docker run -u zap --rm -v $(pwd):/zap/wrk:rw zaproxy/zap-stable zap-full-scan.py -t https://software-engineering-devops-project.onrender.com -g gen.conf -r zap-report.html
+          docker run -u root --rm -v $(pwd):/zap/wrk:rw zaproxy/zap-stable bash -c "chmod -R 777 /zap/wrk && zap-full-scan.py -t https://software-engineering-devops-project.onrender.com -r zap-report.html"
           echo "ZAP scan completed"
       env:
         ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
