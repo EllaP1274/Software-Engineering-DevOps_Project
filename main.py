@@ -23,7 +23,7 @@ def add_security_headers(response):
     # Enforce HTTPS
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     # Content Security Policy (CSP)
-    response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'"
+    response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; object-src 'none';"
     # Restrict browser features
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
     # Prevent Spectre-like attacks
