@@ -32,10 +32,6 @@ jobs:
       run: |
         pytest
 
-    - name: Fix permissions for ZAP config
-      run: |
-        chmod 755 gen.conf
-
 
     # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
