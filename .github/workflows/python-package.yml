@@ -56,7 +56,7 @@ jobs:
       run: |
         docker run -u zap --rm -v $(pwd):/zap/wrk:rw owasp/zap2docker-stable zap-full-scan.py -t https://software-engineering-devops-project.onrender.com -g gen.conf -r zap-report.html
       env:
-        ZAP_API_KEY: ${{ 8u66ne34c4cdapldfphocuj3qb }}
+        ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
 
     # Optional: Save the ZAP report as an artifact
     - name: Upload ZAP report
