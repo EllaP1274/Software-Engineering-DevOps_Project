@@ -50,12 +50,12 @@ jobs:
     # Inspect Docker container logs
     - name: Inspect Docker container logs
       run: |
-        docker logs software-engineering-devOps-project-container
+        docker logs software-engineering-devops-project-container
 
     # Verify templates directory inside Docker container
     - name: Verify templates directory inside Docker container
       run: |
-        docker exec software-engineering-devOps-project-container ls /app/app/templates
+        docker exec software-engineering-devops-project-container ls /app/app/templates
 
     # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
