@@ -31,7 +31,31 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+        
+  # Build Docker Image for Flask App
+    - name: Build Docker Image for Flask App
+      run: |
+        docker build -t software-engineering-devops-project .
 
+ # Run Flask App in Docker with volume mapping
+    - name: Run Flask App in Docker
+      run: |
+        docker run -d -p 5000:5000 --name software-engineering-devops-project-container -v $(pwd)/app:/app software-engineering-devops-project
+
+    # Check if Docker container is running
+    - name: Check if Docker container is running
+      run: |
+        docker ps
+
+    # Inspect Docker container logs
+    - name: Inspect Docker container logs
+      run: |
+        docker logs software-engineering-devOps-project-container
+
+    # Verify templates directory inside Docker container
+    - name: Verify templates directory inside Docker container
+      run: |
+        docker exec software-engineering-devOps-project-container ls /app/app/templates
 
     # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
