@@ -111,6 +111,7 @@ def test_login_invalid_password(init_db, client):
     # Check for the login failure message
     assert response.status_code == 200
     assert b'Login failed. Check your username and/or password.' in response.data
+    assert b'<form' in response.data  # Ensure the login form is rendered
 
 def test_ticket_form_valid():
     """Test valid ticket form."""
