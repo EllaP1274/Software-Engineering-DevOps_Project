@@ -6,7 +6,8 @@ from app.forms import RegistrationForm, LoginForm, TicketForm
 from datetime import datetime
 
 # Define the Blueprint
-main = Blueprint('main', __name__)
+main = Blueprint('main', __name__, template_folder='/app/templates',  static_folder='/app/static')
+#main = Blueprint('main', __name__)
 
 @main.route('/health', methods=['GET', 'HEAD'])
 def health_check():
