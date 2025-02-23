@@ -31,6 +31,11 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+        
+  # Build Docker Image for Flask App
+    - name: Build Docker Image for Flask App
+      run: |
+        docker build -t software-engineering-devops-project .
 
  # Run Flask App in Docker with volume mapping
     - name: Run Flask App in Docker
