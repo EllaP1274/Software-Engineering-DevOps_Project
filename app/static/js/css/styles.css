@@ -8,6 +8,7 @@ body {
 
 .navbar-nav .nav-link {
     font-weight: 500;
+    padding-bottom: 20px;
 }
 
 .status-open {
