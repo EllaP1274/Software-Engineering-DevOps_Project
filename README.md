@@ -69,3 +69,4 @@ You can run pytest to see results of tests.
 I have used docker a docker image and container. You can see they build and run correctly from the pipeline building successfully.
 
 This is the link to the hosted web application - https://software-engineering-devops-project.onrender.com
+This is the link the the docker deployed app - http://127.0.0.1:5000/dashboard
