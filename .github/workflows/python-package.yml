@@ -56,6 +56,7 @@ jobs:
     - name: Verify templates directory inside Docker container
       run: |
         docker exec software-engineering-devops-project-container ls /app/templates
+        docker exec software-engineering-devops-project-container ls /app/static
 
     # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
