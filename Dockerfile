@@ -10,9 +10,6 @@ COPY . /app
 # Install dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project (including templates)
-COPY . .
-
 # Ensure the templates and static directories are correctly copied to the container
 COPY app/templates /app/templates
 COPY app/static /app/static
