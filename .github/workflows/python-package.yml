@@ -40,13 +40,7 @@ jobs:
   # Run Flask App in Docker with volume mapping
     - name: Run Flask App in Docker
       run: |
-        docker run -d -p 5000:5000 --name software-engineering-devops-project-container -v $(pwd)/app:/app --memory=4g software-engineering-devops-project
-
-  # Initialize Database (Flask Migrations)
-    - name: Initialize the Database
-      run: |
-        docker exec software-engineering-devops-project-container flask db upgrade
-        echo "Database initialized successfully"
+        docker run -d -p 5000:5000 --name software-engineering-devops-project-container -v $(pwd)/app:/app software-engineering-devops-project
 
   # Check if Docker container is running
     - name: Check if Docker container is running
