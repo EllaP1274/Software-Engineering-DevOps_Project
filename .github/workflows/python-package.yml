@@ -50,7 +50,7 @@ jobs:
   # Inspect Docker container logs
     - name: Inspect Docker container logs
       run: |
-        docker logs software-engineering-devops-project-container
+        docker logs software-engineering-devops-project
 
   # Verify templates directory inside Docker container
     - name: Verify templates directory inside Docker container
