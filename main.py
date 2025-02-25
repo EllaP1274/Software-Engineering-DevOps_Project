@@ -2,7 +2,7 @@ from app import create_app, db
 
 app = create_app()
 
-# Secure Session Cookies
+# Secure Session Cookies (Ensure cookies are only sent over HTTPS)
 app.config.update(
     SESSION_COOKIE_SECURE=True,  # Ensure cookies are only sent over HTTPS
     SESSION_COOKIE_HTTPONLY=True,  # Prevent JavaScript access to cookies
@@ -17,7 +17,7 @@ def add_security_headers(response):
     # Prevent MIME sniffing
     response.headers["X-Content-Type-Options"] = "nosniff"
     # Enforce HTTPS
-    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     # Content Security Policy (CSP)
     response.headers['Content-Security-Policy'] = (
         "default-src 'self'; "
@@ -25,21 +25,14 @@ def add_security_headers(response):
         "style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com; "
         "font-src 'self' https://cdnjs.cloudflare.com; "
         "img-src 'self' data:; "
-        "object-src 'none'; "  # Blocks plugins like Flash
-        "frame-ancestors 'none'; "  # Prevents embedding in iframes
     )
     # Restrict browser features
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
     # Prevent Spectre-like attacks
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
     response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
-    # Prevent leaking referrer data
-    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-    # Hide Proxy-related headers
-    response.headers.pop("X-Powered-By", None)
-    response.headers.pop("Server", None)
-
     return response
 
 if __name__ == "__main__":
     app.run(debug=True)
+
