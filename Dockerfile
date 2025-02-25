@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Ensure the templates and static directories are correctly copied to the container
 COPY app/templates /app/templates
 COPY app/static /app/static
+COPY instance app/instance
 
 # Expose port 5000 (default for Flask)
 EXPOSE 5000
