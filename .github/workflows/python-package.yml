@@ -55,8 +55,8 @@ jobs:
   # Verify templates directory inside Docker container
     - name: Verify templates directory inside Docker container
       run: |
-        docker exec software-engineering-devops-project-container ls /app/templates
-        docker exec software-engineering-devops-project-container ls /app/static
+        docker exec software-engineering-devops-project ls /app/templates
+        docker exec software-engineering-devops-project ls /app/static
 
   # Deploy to Render
     - name: Deploy to Render
