@@ -1,5 +1,4 @@
 from app import create_app, db
-from flask_wtf.csrf import CSRFProtect
 
 app = create_app()
 
@@ -9,9 +8,6 @@ app.config.update(
     SESSION_COOKIE_HTTPONLY=True,  # Prevent JavaScript access to cookies
     SESSION_COOKIE_SAMESITE="Strict",  # Restrict cross-site cookie sharing
 )
-
-# Enable CSRF Protection
-csrf = CSRFProtect(app)
 
 # Apply Security Headers After Each Request
 @app.after_request
@@ -23,7 +19,13 @@ def add_security_headers(response):
     # Enforce HTTPS
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     # Content Security Policy (CSP)
-    response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; object-src 'none';"
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com; "
+        "style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com; "
+        "font-src 'self' https://cdnjs.cloudflare.com; "
+        "img-src 'self' data:; "
+    )
     # Restrict browser features
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
     # Prevent Spectre-like attacks
