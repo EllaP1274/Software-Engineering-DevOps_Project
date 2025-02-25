@@ -67,3 +67,4 @@ You can run python delete_user.py to delete any unwanted users.
 You can run pytest to see results of tests.
 
 This is the link to the hosted web application - https://software-engineering-devops-project.onrender.com
+This is the link to the docker contained app - http://127.0.0.1:5000/

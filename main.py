@@ -25,8 +25,6 @@ def add_security_headers(response):
         "style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com; "
         "font-src 'self' https://cdnjs.cloudflare.com; "
         "img-src 'self' data:; "
-        "object-src 'none'; "  # Blocks plugins like Flash
-        "frame-ancestors 'none'; "  # Prevents embedding in iframes
     )
     # Restrict browser features
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
@@ -38,6 +36,9 @@ def add_security_headers(response):
     # Hide Proxy-related headers
     response.headers.pop("X-Powered-By", None)
     response.headers.pop("Server", None)
+
+    # Subresource Integrity (SRI) for External Scripts
+    response.headers["Subresource-Integrity"] = "sha384-xxxxxxxxxxxxxxxxxxxx"  # Add proper SRI hash for external resources
 
     return response
 
