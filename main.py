@@ -37,9 +37,6 @@ def add_security_headers(response):
     response.headers.pop("X-Powered-By", None)
     response.headers.pop("Server", None)
 
-    # Subresource Integrity (SRI) for External Scripts
-    response.headers["Subresource-Integrity"] = "sha384-xxxxxxxxxxxxxxxxxxxx"  # Add proper SRI hash for external resources
-
     return response
 
 if __name__ == "__main__":
