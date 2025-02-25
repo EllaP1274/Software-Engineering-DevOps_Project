@@ -39,8 +39,8 @@ jobs:
 
   # Run Flask App in Docker with volume mapping
     - name: Run Flask App in Docker
-      run: |
-        docker run -d -p 5000:5000 --name software-engineering-devops-project-container -v $(pwd)/app:/app software-engineering-devops-project
+      run: | 
+        docker run -p 5000:5000 --name software-engineering-devops-project -v $(pwd)/app/instance:/app/instance software-engineering-devops-project
 
   # Check if Docker container is running
     - name: Check if Docker container is running
