@@ -66,4 +66,6 @@ You can run python delete_user.py to delete any unwanted users.
 
 You can run pytest to see results of tests.
 
+I have used docker a docker image and container. You can see they build and run correctly from the pipeline building successfully.
+
 This is the link to the hosted web application - https://software-engineering-devops-project.onrender.com
