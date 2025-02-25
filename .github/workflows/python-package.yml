@@ -58,6 +58,15 @@ jobs:
         docker exec software-engineering-devops-project-container ls /app/templates
         docker exec software-engineering-devops-project-container ls /app/static
 
+  # Deploy to Render
+    - name: Deploy to Render
+      run: |
+        echo "Deploying to Render..."
+        curl -X POST https://api.render.com/v1/services/srv-custb03qf0us739otqog/deploy \
+        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+        -d '{"clearCache":false}'
+        echo "Deployment triggered successfully"
+
   # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
       run: |
@@ -79,12 +88,3 @@ jobs:
       with:
         name: zap-report
         path: zap-report.html
-
-  # Deploy to Render
-    - name: Deploy to Render
-      run: |
-        echo "Deploying to Render..."
-        curl -X POST https://api.render.com/v1/services/srv-custb03qf0us739otqog/deploy \
-        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-        -d '{"clearCache":false}'
-        echo "Deployment triggered successfully"
