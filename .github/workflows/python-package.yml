@@ -65,7 +65,7 @@ jobs:
         curl -v -X POST "https://api.render.com/v1/services/srv-custb03qf0us739otqog/deploys" \
         -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
         -H "Content-Type: application/json" \
-        --data-binary '{"clearCache":false}'
+        --data '{"clearCache": false}'
         echo "Deployment triggered successfully"
 
   # OWASP ZAP - Automated Security Scanning
