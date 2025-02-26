@@ -61,12 +61,14 @@ jobs:
   # Deploy to Render
     - name: Deploy to Render
       run: |
-        echo "Deploying to Render..."
-        curl -v -X POST "https://api.render.com/v1/services/srv-custb03qf0us739otqog/deploys" \
-        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-        -H "Content-Type: application/json" \
-        --data '{\"clearCache\": false}'
-        echo "Deployment triggered successfully"
+          echo "Deploying to Render..."
+          JSON_PAYLOAD="{\"clearCache\": false}"
+          echo "$JSON_PAYLOAD" | jq .  # Validate JSON before sending
+          curl -X POST "https://api.render.com/v1/services/srv-custb03qf0us739otqog/deploys" \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            --data "$JSON_PAYLOAD"
+          echo "Deployment triggered successfully"
 
   # OWASP ZAP - Automated Security Scanning
     - name: Set up OWASP ZAP container
