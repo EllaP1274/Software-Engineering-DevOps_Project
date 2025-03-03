@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_admin import Admin
@@ -26,6 +26,13 @@ def create_app(config_class='app.config.Config'): #change Config to TestConfig a
     # Import and register blueprints (routes)
     from app.routes import main
     app.register_blueprint(main)
+
+     # Security Headers
+    @app.after_request
+    def add_security_headers(response):
+        if request.is_secure:  # Only apply if HTTPS is used
+            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        return response
 
     # Import models here to avoid circular import issues
     with app.app_context():
