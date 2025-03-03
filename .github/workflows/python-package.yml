@@ -92,5 +92,5 @@ jobs:
     - name: Upload ZAP report
       uses: actions/upload-artifact@v4
       with:
-        name: zap-report
+        name: zap-report-${{ matrix.python-version }}  # Unique name with Python version
         path: zap-report.html
